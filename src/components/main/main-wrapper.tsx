@@ -1,8 +1,8 @@
 'use client';
+
 import type { FC } from 'react';
 import { clsx } from 'clsx';
 import { useInfiniteScrollListings } from '@/hooks';
-import { Skeleton } from 'antd';
 import { SearchSection } from '../shared';
 import { Categories, QuickLinks, Recommendations } from './components';
 
@@ -11,15 +11,19 @@ interface Props {
 }
 
 export const MainWrapper: FC<Props> = ({ className }) => {
-  const { listings, loading } = useInfiniteScrollListings();
-  console.log(listings);
+  const { listings, listingsSceleton, error } = useInfiniteScrollListings();
+
+  if (error) {
+    return <p>Error loading data</p>;
+  }
 
   return (
     <div className={clsx('', className)}>
       <SearchSection />
       <QuickLinks />
       <Categories />
-      {loading ? <Skeleton active /> : <Recommendations items={listings || []} />}
+      <Recommendations items={listings} listingsSceleton={listingsSceleton} />
+      {/* {listingsSceleton} */}
     </div>
   );
 };

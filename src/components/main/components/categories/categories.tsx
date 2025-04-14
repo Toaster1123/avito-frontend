@@ -15,7 +15,7 @@ export const Categories: FC<Props> = ({ className }) => {
         <Link href="/auto" className="flex flex-col items-center">
           <div className="mb-2 h-24 w-full overflow-hidden rounded-lg bg-white p-2 shadow-sm">
             <Image
-              src="/placeholder.svg?height=100&width=150"
+              src="https://www.avito.st/s/avito/components/visual_rubricator/156x90/cat_1.png"
               alt="Авто"
               width={150}
               height={100}
@@ -27,7 +27,7 @@ export const Categories: FC<Props> = ({ className }) => {
         <Link href="/nedvizhimost" className="flex flex-col items-center">
           <div className="mb-2 h-24 w-full overflow-hidden rounded-lg bg-white p-2 shadow-sm">
             <Image
-              src="/placeholder.svg?height=100&width=150"
+              src="https://www.avito.st/s/avito/components/visual_rubricator/156x90/cat_4_v2.png"
               alt="Недвижимость"
               width={150}
               height={100}
@@ -36,22 +36,11 @@ export const Categories: FC<Props> = ({ className }) => {
           </div>
           <span className="text-center text-sm">Недвижимость</span>
         </Link>
-        <Link href="/rabota" className="flex flex-col items-center">
-          <div className="mb-2 h-24 w-full overflow-hidden rounded-lg bg-white p-2 shadow-sm">
-            <Image
-              src="/placeholder.svg?height=100&width=150"
-              alt="Работа"
-              width={150}
-              height={100}
-              className="h-full w-full object-contain"
-            />
-          </div>
-          <span className="text-center text-sm">Работа</span>
-        </Link>
+
         <Link href="/odezhda" className="flex flex-col items-center">
           <div className="mb-2 h-24 w-full overflow-hidden rounded-lg bg-white p-2 shadow-sm">
             <Image
-              src="/placeholder.svg?height=100&width=150"
+              src="https://www.avito.st/s/avito/components/visual_rubricator/156x90/cat_27.png"
               alt="Одежда"
               width={150}
               height={100}
@@ -63,7 +52,7 @@ export const Categories: FC<Props> = ({ className }) => {
         <Link href="/hobbi" className="flex flex-col items-center">
           <div className="mb-2 h-24 w-full overflow-hidden rounded-lg bg-white p-2 shadow-sm">
             <Image
-              src="/placeholder.svg?height=100&width=150"
+              src="https://www.avito.st/s/avito/components/visual_rubricator/156x90/cat_7.png"
               alt="Хобби"
               width={150}
               height={100}
@@ -75,7 +64,7 @@ export const Categories: FC<Props> = ({ className }) => {
         <Link href="/zhivotnye" className="flex flex-col items-center">
           <div className="mb-2 h-24 w-full overflow-hidden rounded-lg bg-white p-2 shadow-sm">
             <Image
-              src="/placeholder.svg?height=100&width=150"
+              src="https://www.avito.st/s/avito/components/visual_rubricator/156x90/cat_35.png"
               alt="Животные"
               width={150}
               height={100}

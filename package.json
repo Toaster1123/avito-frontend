@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "codegen": "graphql-codegen --config codegen.ts"
+    "codegen": "graphql-codegen --config codegen.config.ts"
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.2",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.2",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -31,6 +32,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.0",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

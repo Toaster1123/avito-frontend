@@ -4,9 +4,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { EnvironmentOutlined } from '@ant-design/icons';
 import { formatNumber } from '@/lib';
+import { FindAllListingsQuery } from '@/graphql/__generated__/output';
+
+type Listing = FindAllListingsQuery['findAllListings']['listings'][0];
 
 interface Props {
-  item: any;
+  item: Listing;
   className?: string;
 }
 
@@ -16,26 +19,35 @@ export const ListingItem: FC<Props> = ({ item, className }) => {
       href={`/listing/${item.id}`}
       key={item.id}
       className={clsx(
-        'group max-w-60 overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg',
+        'group flex flex-col max-w-60 overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg',
         className,
       )}>
-      <div className="h-48 w-full overflow-hidden">
-        <img
-          src={item.images[0]}
-          alt="Chevrolet"
-          width={236}
-          height={236}
-          className="h-full w-full object-cover transition-transform group-hover:scale-105"
-        />
+      <div className="h-60 w-full overflow-hidden">
+        {item.images.length > 0 ? (
+          <Image
+            src={item.images[0]}
+            alt={item.name || 'image'}
+            width={240}
+            height={240}
+            priority
+            className="object-cover transition-transform group-hover:scale-105"
+          />
+        ) : (
+          <div className="h-60 w-full bg-neutral-200 text-neutral-500 text-sm flex justify-center items-center">
+            Нету фото
+          </div>
+        )}
       </div>
-      <div className="p-3">
+      <div className="flex flex-col justify-between flex-grow p-3">
         <div className="mb-1 flex items-center justify-between">
           <h3 className="font-bold text-cyan-600">{item.name} </h3>
         </div>
-        <p className="text-lg font-bold">{formatNumber(item.price)} ₽</p>
-        <div className="text-sm text-neutral-700 flex items-center gap-0.5">
-          <EnvironmentOutlined />
-          {item.city}
+        <div className="">
+          <p className="text-lg font-bold">{formatNumber(item.price)} ₽</p>
+          <div className="text-sm text-neutral-700 flex items-center gap-0.5">
+            <EnvironmentOutlined />
+            {item.city}
+          </div>
         </div>
       </div>
     </Link>

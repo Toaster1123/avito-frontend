@@ -1,46 +1,74 @@
-import { FIND_ALL_LISTINGS } from '@/graphql';
-import { useQuery } from '@apollo/client';
+import { ListingsSceleton } from '@/components';
+import { useFindAllListingsQuery, FindAllListingsQuery } from '@/graphql/__generated__/output';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const limit = 24;
+type Listing = FindAllListingsQuery['findAllListings']['listings'][0];
 
 export const useInfiniteScrollListings = () => {
-  const { ref, inView } = useInView();
-  const [items, setItems] = useState<[] | any[]>([]);
-  const { data, loading, error, fetchMore } = useQuery(FIND_ALL_LISTINGS, {
+  const { ref, inView } = useInView({
+    threshold: 0.8,
+  });
+  const [items, setItems] = useState<Listing[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  const {
+    data,
+    loading: initialLoading,
+    error,
+    fetchMore,
+  } = useFindAllListingsQuery({
     variables: {
       limit,
       offset: 0,
     },
-    notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-first',
   });
 
   useEffect(() => {
-    if (data?.findAllListings.listings) {
-      setItems(data.findAllListings.listings);
-    }
+    if (!data) return;
+    setItems(data.findAllListings.listings);
+    setHasMore(data.findAllListings.hasMore);
   }, [data]);
 
   useEffect(() => {
-    if (inView && !loading) {
+    if (inView && data?.findAllListings.hasMore && !isLoadingMore) {
+      setIsLoadingMore(true);
       fetchMore({
         variables: {
           offset: items.length,
           limit,
         },
-      }).then(({ data }) => {
-        if (data?.findAllListings?.listings.length) {
-          setItems((prev) => [...prev, ...data.findAllListings.listings]);
-        }
-      });
+      })
+        .then(({ data }) => {
+          if (data?.findAllListings?.listings.length) {
+            setItems((prev) => [...prev, ...data.findAllListings.listings]);
+            setHasMore(data.findAllListings.hasMore);
+          } else {
+            setHasMore(false);
+          }
+        })
+        .finally(() => setIsLoadingMore(false));
     }
-  }, [inView]);
+  }, [inView, hasMore, data, isLoadingMore, items.length, fetchMore]);
 
+  // const cursor = (
+  //   <Cursor
+  //     ref={ref}
+  //     hideCursor={initialLoading || !hasMore || !data}
+  //     isLoading={initialLoading || isLoadingMore}
+  //   />
+  // );
+  const listingsSceleton = (
+    <ListingsSceleton ref={ref} hideList={initialLoading || !hasMore || !data} />
+  );
   return {
     listings: items,
-    loading,
+    loading: initialLoading || isLoadingMore,
     error,
-    ref,
+    listingsSceleton,
   };
 };
