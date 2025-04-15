@@ -8,9 +8,9 @@ interface Props {
 
 export const QuickLinks: FC<Props> = ({ className }) => {
   return (
-    <div className={clsx('container mx-auto px-4 py-2', className)}>
+    <div className={clsx('container mx-auto py-2', className)}>
       <div className="flex items-center space-x-4 overflow-x-auto text-sm">
-        <Link href="#" className="flex items-center rounded-full bg-gray-200 px-3 py-1">
+        <Link href="#" className="flex items-center rounded-full bg-gray-200 py-1">
           <span className="mr-2">🏠</span>
           Жилье для поездки
         </Link>

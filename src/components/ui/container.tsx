@@ -12,7 +12,7 @@ export const Container: FC<Props> = ({ children, tag = 'div', className }) => {
   return React.createElement(
     tag,
     {
-      className: clsx('container mx-auto p-2', className),
+      className: clsx('container mx-auto', className),
     },
     children,
   );

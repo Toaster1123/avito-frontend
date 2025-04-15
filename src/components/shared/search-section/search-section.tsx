@@ -10,7 +10,7 @@ interface Props {
 
 export const SearchSection: FC<Props> = ({ className }) => {
   return (
-    <div className={clsx('container mx-auto px-4 py-4', className)}>
+    <div className={clsx('w-full mx-auto', className)}>
       <div className="flex items-center">
         <Link href="/" className="mr-4 flex items-center">
           <div className="flex">

@@ -13,7 +13,7 @@ export const ListingList: FC<Props> = ({ items, className }) => {
   return (
     <div
       className={clsx(
-        'grid grid-cols-1 gap-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+        'max-[1380px]:grid-cols-3 max-xl:grid-cols-2 grid gap-4 gap-y-8 grid-cols-4',
         className,
       )}>
       {items.map((item, id) => (

@@ -8,7 +8,7 @@ type Listing = FindAllListingsQuery['findAllListings']['listings'][0];
 
 export const useInfiniteScrollListings = () => {
   const { ref, inView } = useInView({
-    threshold: 0.8,
+    threshold: 1,
   });
   const [items, setItems] = useState<Listing[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -54,16 +54,8 @@ export const useInfiniteScrollListings = () => {
         .finally(() => setIsLoadingMore(false));
     }
   }, [inView, hasMore, data, isLoadingMore, items.length, fetchMore]);
-
-  // const cursor = (
-  //   <Cursor
-  //     ref={ref}
-  //     hideCursor={initialLoading || !hasMore || !data}
-  //     isLoading={initialLoading || isLoadingMore}
-  //   />
-  // );
   const listingsSceleton = (
-    <ListingsSceleton ref={ref} hideList={initialLoading || !hasMore || !data} />
+    <ListingsSceleton ref={ref} showList={initialLoading || isLoadingMore} hasMore={hasMore} />
   );
   return {
     listings: items,
