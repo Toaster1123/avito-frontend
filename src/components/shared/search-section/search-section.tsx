@@ -10,7 +10,7 @@ interface Props {
 
 export const SearchSection: FC<Props> = ({ className }) => {
   return (
-    <div className={clsx('w-full mx-auto', className)}>
+    <div className={clsx('w-full mx-auto mt-5', className)}>
       <div className="flex items-center">
         <Link href="/" className="mr-4 flex items-center">
           <div className="flex">
@@ -18,7 +18,7 @@ export const SearchSection: FC<Props> = ({ className }) => {
             <span className="h-8 w-8 rounded-full bg-cyan-500 -ml-2"></span>
             <span className="h-8 w-8 rounded-full bg-orange-500 -ml-2"></span>
           </div>
-          <span className="ml-2 text-2xl font-bold">Avito</span>
+          <span className="ml-2 text-3xl font-bold">Avito</span>
         </Link>
 
         <div className="flex flex-1 items-center gap-1">

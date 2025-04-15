@@ -1,0 +1,16 @@
+query GetOneListing($id: ID!) {
+  findOneListing(id: $id) {
+    id
+    name
+    description
+    price
+    images
+    city
+    createdAt
+    user {
+      id
+      name
+      email
+    }
+  }
+}

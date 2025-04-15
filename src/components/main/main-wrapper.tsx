@@ -3,7 +3,7 @@
 import type { FC } from 'react';
 import { clsx } from 'clsx';
 import { useInfiniteScrollListings } from '@/hooks';
-import { AsideContent, SearchSection } from '../shared';
+import { AsideContent } from '../shared';
 import { Categories, QuickLinks, Recommendations } from './components';
 
 interface Props {
@@ -18,8 +18,7 @@ export const MainWrapper: FC<Props> = ({ className }) => {
   }
 
   return (
-    <div className={clsx('max-[1380px]:px-24 max-w-7xl py-6 mx-auto', className)}>
-      <SearchSection />
+    <div className={clsx('max-[1380px]:px-24 max-w-7xl mx-auto', className)}>
       <QuickLinks />
       <div className="flex gap-8">
         <div>

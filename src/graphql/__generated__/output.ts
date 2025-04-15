@@ -5,21 +5,17 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
-  [_ in K]?: never;
-};
-export type Incremental<T> =
-  | T
-  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
-  Timestamp: { input: any; output: any };
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Timestamp: { input: any; output: any; }
 };
 
 export type Auth = {
@@ -133,6 +129,7 @@ export type Listing = {
   userId: Scalars['String']['output'];
 };
 
+
 export type ListingGetUserListingsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -187,62 +184,77 @@ export type Mutation = {
   updateReview: Review;
 };
 
+
 export type MutationAddReviewArgs = {
   createReviewInput: CreateReviewInput;
   userId: Scalars['String']['input'];
 };
 
+
 export type MutationCreateCategoryArgs = {
   createCategoryInput: CreateCategoryInput;
 };
+
 
 export type MutationCreateListingArgs = {
   createListingInput: CreateListingInput;
 };
 
+
 export type MutationCreateMessageArgs = {
   createMessageInput: CreateMessageInput;
 };
+
 
 export type MutationCreateReviewArgs = {
   createReviewInput: CreateReviewInput;
 };
 
+
 export type MutationCreateUserArgs = {
   createUserInput: CreateUserInput;
 };
+
 
 export type MutationRemoveListingArgs = {
   id: Scalars['ID']['input'];
 };
 
+
 export type MutationRemoveMessageArgs = {
   id: Scalars['String']['input'];
 };
+
 
 export type MutationRemoveReviewArgs = {
   id: Scalars['String']['input'];
 };
 
+
 export type MutationSignInArgs = {
   signInInput: RegisterInput;
 };
+
 
 export type MutationSignUpArgs = {
   signUpInput: RegisterInput;
 };
 
+
 export type MutationUpdateListingArgs = {
   updateListingInput: UpdateListingInput;
 };
+
 
 export type MutationUpdateListingActiveStatusArgs = {
   updateListingActiveInput: UpdateListingInput;
 };
 
+
 export type MutationUpdateMessageArgs = {
   updateMessageInput: UpdateMessageInput;
 };
+
 
 export type MutationUpdateReviewArgs = {
   updateReviewInput: UpdateReviewInput;
@@ -262,32 +274,39 @@ export type Query = {
   reviews: Array<Maybe<Review>>;
 };
 
+
 export type QueryCategoryArgs = {
   id: Scalars['Int']['input'];
 };
+
 
 export type QueryFindAllListingsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
+
 export type QueryFindOneListingArgs = {
   id: Scalars['ID']['input'];
 };
+
 
 export type QueryFindOneUserArgs = {
   id: Scalars['ID']['input'];
 };
 
+
 export type QueryMessageArgs = {
   id: Scalars['String']['input'];
 };
+
 
 export type QueryMessagesByDialogArgs = {
   dialogId: Scalars['String']['input'];
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
+
 
 export type QueryReviewArgs = {
   id: Scalars['String']['input'];
@@ -395,38 +414,32 @@ export type FindAllListingsQueryVariables = Exact<{
   offset?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
-export type FindAllListingsQuery = {
-  __typename?: 'Query';
-  findAllListings: {
-    __typename?: 'ListingPaginationResult';
-    hasMore: boolean;
-    listings: Array<{
-      __typename?: 'Listing';
-      id: string;
-      name: string;
-      price: number;
-      images: Array<string>;
-      createdAt: Date;
-      city: string;
-    }>;
-  };
-};
+
+export type FindAllListingsQuery = { __typename?: 'Query', findAllListings: { __typename?: 'ListingPaginationResult', hasMore: boolean, listings: Array<{ __typename?: 'Listing', id: string, name: string, price: number, images: Array<string>, createdAt: any, city: string }> } };
+
+export type GetOneListingQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, images: Array<string>, city: string, createdAt: any, user: { __typename?: 'User', id: string, name: string, email: string } } };
+
 
 export const FindAllListingsDocument = gql`
-  query FindAllListings($limit: Int, $offset: Int) {
-    findAllListings(limit: $limit, offset: $offset) {
-      listings {
-        id
-        name
-        price
-        images
-        createdAt
-        city
-      }
-      hasMore
+    query FindAllListings($limit: Int, $offset: Int) {
+  findAllListings(limit: $limit, offset: $offset) {
+    listings {
+      id
+      name
+      price
+      images
+      createdAt
+      city
     }
+    hasMore
   }
-`;
+}
+    `;
 
 /**
  * __useFindAllListingsQuery__
@@ -445,42 +458,70 @@ export const FindAllListingsDocument = gql`
  *   },
  * });
  */
-export function useFindAllListingsQuery(
-  baseOptions?: Apollo.QueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(
-    FindAllListingsDocument,
-    options,
-  );
-}
-export function useFindAllListingsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(
-    FindAllListingsDocument,
-    options,
-  );
-}
-export function useFindAllListingsSuspenseQuery(
-  baseOptions?:
-    | Apollo.SkipToken
-    | Apollo.SuspenseQueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>,
-) {
-  const options =
-    baseOptions === Apollo.skipToken ? baseOptions : { ...defaultOptions, ...baseOptions };
-  return Apollo.useSuspenseQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(
-    FindAllListingsDocument,
-    options,
-  );
-}
+export function useFindAllListingsQuery(baseOptions?: Apollo.QueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(FindAllListingsDocument, options);
+      }
+export function useFindAllListingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(FindAllListingsDocument, options);
+        }
+export function useFindAllListingsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(FindAllListingsDocument, options);
+        }
 export type FindAllListingsQueryHookResult = ReturnType<typeof useFindAllListingsQuery>;
 export type FindAllListingsLazyQueryHookResult = ReturnType<typeof useFindAllListingsLazyQuery>;
-export type FindAllListingsSuspenseQueryHookResult = ReturnType<
-  typeof useFindAllListingsSuspenseQuery
->;
-export type FindAllListingsQueryResult = Apollo.QueryResult<
-  FindAllListingsQuery,
-  FindAllListingsQueryVariables
->;
+export type FindAllListingsSuspenseQueryHookResult = ReturnType<typeof useFindAllListingsSuspenseQuery>;
+export type FindAllListingsQueryResult = Apollo.QueryResult<FindAllListingsQuery, FindAllListingsQueryVariables>;
+export const GetOneListingDocument = gql`
+    query GetOneListing($id: ID!) {
+  findOneListing(id: $id) {
+    id
+    name
+    description
+    price
+    images
+    city
+    createdAt
+    user {
+      id
+      name
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOneListingQuery__
+ *
+ * To run a query within a React component, call `useGetOneListingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOneListingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOneListingQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetOneListingQuery(baseOptions: Apollo.QueryHookOptions<GetOneListingQuery, GetOneListingQueryVariables> & ({ variables: GetOneListingQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOneListingQuery, GetOneListingQueryVariables>(GetOneListingDocument, options);
+      }
+export function useGetOneListingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOneListingQuery, GetOneListingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOneListingQuery, GetOneListingQueryVariables>(GetOneListingDocument, options);
+        }
+export function useGetOneListingSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetOneListingQuery, GetOneListingQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetOneListingQuery, GetOneListingQueryVariables>(GetOneListingDocument, options);
+        }
+export type GetOneListingQueryHookResult = ReturnType<typeof useGetOneListingQuery>;
+export type GetOneListingLazyQueryHookResult = ReturnType<typeof useGetOneListingLazyQuery>;
+export type GetOneListingSuspenseQueryHookResult = ReturnType<typeof useGetOneListingSuspenseQuery>;
+export type GetOneListingQueryResult = Apollo.QueryResult<GetOneListingQuery, GetOneListingQueryVariables>;
