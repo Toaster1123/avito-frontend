@@ -1,5 +1,3 @@
-import { getClient } from '@/graphql/appolo-client';
-import { GET_ONE_LISTING } from '@/graphql/appolo-consts/listings-query';
 import React from 'react';
 import { ListingDescription, ListingImages, LitingPagination, SameListings } from './components';
 import { GetOneListingQuery } from '@/graphql/__generated__/output';
@@ -8,24 +6,16 @@ import { SallerActionPanel } from '../saller-action-panel';
 type Listing = GetOneListingQuery['findOneListing'];
 
 interface Props {
-  id: string;
+  listing: Listing;
+  loading: boolean;
 }
 
-export const ListingFeed: React.FC<Props> = async ({ id }) => {
-  console.log('id', id);
-  const client = getClient();
-  const { data, loading } = await client.query({
-    query: GET_ONE_LISTING,
-    variables: { id },
-  });
-  console.log(loading);
-  const listing: Listing = data.findOneListing;
-
+export const ListingFeed: React.FC<Props> = async ({ listing }) => {
   return (
-    <div className="flex max-[1380px]:px-24 py-6 justify-center">
+    <div className="grid grid-cols-2 max-[1380px]:px-24 max-w-7xl mx-auto py-6 gap-14">
       <div className="">
         <LitingPagination />
-        <h2 className="font-bold text-3xl mt-2">{listing.name}</h2>
+        <h2 className="font-bold text-3xl mt-2 mb-6">{listing.name}</h2>
         <ListingImages images={listing.images} />
         <ListingDescription description={listing.description} />
         <SameListings />

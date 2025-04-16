@@ -1,5 +1,6 @@
 import { declineWord } from '@/lib';
 import React from 'react';
+import { Rate } from 'antd';
 
 interface Props {
   name: string;
@@ -8,14 +9,15 @@ interface Props {
 export const SallerInfo: React.FC<Props> = ({ name }) => {
   const profileImage = '';
   const listingCount = 23;
+  const rating = 4.7;
   return (
     <div className="flex flex-col">
       <div className="flex">
         <div className="">
           <h3 className="font-bold text-xl">{name}</h3>
           <div className="flex">
-            <span>4.9</span>
-            <div className="">⭐⭐⭐⭐⭐</div>
+            <span>{rating}</span>
+            <Rate value={rating} allowHalf disabled />
             <span>{432} отзывов</span>
           </div>
         </div>

@@ -28,6 +28,7 @@ export const ListingItem: FC<Props> = ({ item, className }) => {
             src={item.images[0]}
             alt={item.name || 'image'}
             width={240}
+            style={{ width: '100%', height: '100%' }}
             height={240}
             priority
             className="object-cover transition-transform group-hover:scale-105"

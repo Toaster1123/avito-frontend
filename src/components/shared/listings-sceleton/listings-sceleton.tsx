@@ -18,7 +18,7 @@ export const ListingsSceleton: FC<Props> = ({ ref, showList, hasMore, className 
       <>
         <div
           className={clsx(
-            'grid grid-cols-1 gap-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+            'max-[1380px]:grid-cols-3 max-xl:grid-cols-2 grid gap-4 gap-y-8 grid-cols-4',
             className,
           )}>
           <div className="rounded-xl h-[364px] w-full bg-neutral-300 animate-pulse" />
