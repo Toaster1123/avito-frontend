@@ -14,6 +14,9 @@ export const GET_ONE_LISTING = gql`
         id
         name
         email
+        rating
+        profileImage
+        createdAt
       }
     }
   }

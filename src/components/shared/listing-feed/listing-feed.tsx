@@ -12,7 +12,7 @@ interface Props {
 
 export const ListingFeed: React.FC<Props> = async ({ listing }) => {
   return (
-    <div className="grid grid-cols-2 max-[1380px]:px-24 max-w-7xl mx-auto py-6 gap-14">
+    <div className="grid grid-cols-2 max-[1380px]:px-24 max-w-7xl mx-auto gap-14">
       <div className="">
         <LitingPagination />
         <h2 className="font-bold text-3xl mt-2 mb-6">{listing.name}</h2>
@@ -20,7 +20,12 @@ export const ListingFeed: React.FC<Props> = async ({ listing }) => {
         <ListingDescription description={listing.description} />
         <SameListings />
       </div>
-      <SallerActionPanel price={listing.price} />
+      <SallerActionPanel
+        userName={listing.user.name}
+        price={listing.price}
+        registerDate={listing.user.createdAt}
+        rating={listing.user.rating}
+      />
     </div>
   );
 };

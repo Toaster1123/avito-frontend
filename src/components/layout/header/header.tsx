@@ -1,8 +1,8 @@
 import type { FC } from 'react';
 import Link from 'next/link';
 import { HeartOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
 import clsx from 'clsx';
+import { Button } from '@/components';
 
 interface Props {
   className?: string;
@@ -43,9 +43,7 @@ export const Header: FC<Props> = ({ className }) => {
             <Link href="#" className="hover:text-blue-400">
               Вход и регистрация
             </Link>
-            <Button className="bg-sky-500! hover:bg-sky-600! border-none! text-white! rounded-md">
-              Разместить объявление
-            </Button>
+            <Button className="py-1.5 px-3" text="Разместить обьявление" fontSize="sm" />
           </div>
         </div>
       </div>

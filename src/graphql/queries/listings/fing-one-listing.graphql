@@ -4,13 +4,16 @@ query GetOneListing($id: ID!) {
     name
     description
     price
-    images
     city
+    images
     createdAt
     user {
       id
       name
       email
+      rating
+      profileImage
+      createdAt
     }
   }
 }

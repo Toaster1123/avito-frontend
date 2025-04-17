@@ -34,6 +34,7 @@ export const ListingImages: React.FC<Props> = ({ images, className }) => {
             src={images[imageIndex] || ''}
             alt="listing image"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="rounded-lg object-contain"
           />
         </div>
