@@ -11,6 +11,10 @@ interface Props {
 }
 
 export const ListingFeed: React.FC<Props> = async ({ listing }) => {
+  const activeListingCount =
+    listing.user.listings?.map((item) => item.active === true).length || null;
+  console.log(listing.user.listings, activeListingCount);
+
   return (
     <div className="grid grid-cols-2 max-[1380px]:px-24 max-w-7xl mx-auto gap-14">
       <div className="">
@@ -25,6 +29,7 @@ export const ListingFeed: React.FC<Props> = async ({ listing }) => {
         price={listing.price}
         registerDate={listing.user.createdAt}
         rating={listing.user.rating}
+        activeListingCount={activeListingCount}
       />
     </div>
   );

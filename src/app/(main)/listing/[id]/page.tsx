@@ -22,6 +22,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
     query: GET_ONE_LISTING,
     variables: { id },
   });
+  console.log(data);
   return (
     <div>
       <ListingFeed listing={data.findOneListing} loading={loading} />

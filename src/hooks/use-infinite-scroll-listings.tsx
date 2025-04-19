@@ -24,6 +24,7 @@ export const useInfiniteScrollListings = () => {
     variables: {
       limit,
       offset: 0,
+      active: true,
     },
     fetchPolicy: 'cache-first',
   });

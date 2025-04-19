@@ -1,5 +1,5 @@
-query FindAllListings($limit: Int, $offset: Int) {
-  findAllListings(limit: $limit, offset: $offset) {
+query FindAllListings($limit: Int, $offset: Int, $active: Boolean) {
+  findAllListings(limit: $limit, offset: $offset, active: $active) {
     listings {
       id
       name

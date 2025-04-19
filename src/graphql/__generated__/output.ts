@@ -281,6 +281,7 @@ export type QueryCategoryArgs = {
 
 
 export type QueryFindAllListingsArgs = {
+  active?: InputMaybe<Scalars['Boolean']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
 };
@@ -412,6 +413,7 @@ export type User = {
 export type FindAllListingsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
 
@@ -422,12 +424,12 @@ export type GetOneListingQueryVariables = Exact<{
 }>;
 
 
-export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any } } };
+export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
 
 
 export const FindAllListingsDocument = gql`
-    query FindAllListings($limit: Int, $offset: Int) {
-  findAllListings(limit: $limit, offset: $offset) {
+    query FindAllListings($limit: Int, $offset: Int, $active: Boolean) {
+  findAllListings(limit: $limit, offset: $offset, active: $active) {
     listings {
       id
       name
@@ -455,6 +457,7 @@ export const FindAllListingsDocument = gql`
  *   variables: {
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
+ *      active: // value for 'active'
  *   },
  * });
  */
@@ -491,6 +494,9 @@ export const GetOneListingDocument = gql`
       rating
       profileImage
       createdAt
+      listings {
+        active
+      }
     }
   }
 }
