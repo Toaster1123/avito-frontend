@@ -14,7 +14,7 @@ export const MainWrapper: FC<Props> = ({ className }) => {
   const { listings, listingsSceleton, error } = useInfiniteScrollListings();
   console.log('Lenght', listings.length);
   if (error) {
-    return <p>Error loading data</p>;
+    return <p className="text-center w-full">Error loading data</p>;
   }
 
   return (

@@ -17,6 +17,12 @@ export const GET_ONE_LISTING = gql`
         rating
         profileImage
         createdAt
+        receivedReviews {
+          id
+        }
+        listings {
+          active
+        }
       }
     }
   }

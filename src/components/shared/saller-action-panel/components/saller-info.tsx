@@ -8,6 +8,7 @@ interface Props {
   registerDate: number;
   rating: number | null | undefined;
   activeListingCount: number | null;
+  reviewsCount: number | null;
 }
 
 export const SallerInfo: React.FC<Props> = ({
@@ -15,6 +16,7 @@ export const SallerInfo: React.FC<Props> = ({
   registerDate,
   rating,
   activeListingCount,
+  reviewsCount,
 }) => {
   const profileImage = '';
   const online = true;
@@ -27,15 +29,20 @@ export const SallerInfo: React.FC<Props> = ({
             <h3 className="font-bold text-[22px]">{userName}</h3>
             {online && <h3 className="font-bold text-[22px] text-green-600/90">в сети</h3>}
           </div>
-          <div className="flex items-center gap-x-1">
+          <div className="flex items-center gap-x-2">
             <span className="">{rating ? rating.toFixed(1).replace('.', ',') : 'Нет отзывов'}</span>
-            {rating && (
+            {rating && reviewsCount && (
               <Rate
                 style={{ fontSize: '16px', color: '#ff9900' }}
                 value={rating}
                 allowHalf
                 disabled
               />
+            )}
+            {reviewsCount && rating && (
+              <span>
+                {reviewsCount} {declineWord(reviewsCount, ['отзыв', 'отзыва', 'отзывов'])}
+              </span>
             )}
           </div>
         </div>
@@ -50,7 +57,8 @@ export const SallerInfo: React.FC<Props> = ({
       <span>На Авито с {registerDateText(registerDate)}</span>
       {activeListingCount && (
         <span>
-          {activeListingCount} {declineWord('объявление', activeListingCount)}
+          {activeListingCount}{' '}
+          {declineWord(activeListingCount, ['объявление', 'объявления', 'объявлений'])}
         </span>
       )}
     </div>

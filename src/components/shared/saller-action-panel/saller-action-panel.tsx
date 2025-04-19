@@ -9,6 +9,7 @@ interface Props {
   registerDate: number;
   rating: number | null | undefined;
   activeListingCount: number | null;
+  reviewsCount: number | null;
 }
 
 export const SallerActionPanel: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const SallerActionPanel: React.FC<Props> = ({
   registerDate,
   rating,
   activeListingCount,
+  reviewsCount,
 }) => {
   return (
     <div className="sticky top-5 h-fit max-[1380px]:max-w-[362px] mt-8 w-full max-w-[460px]">
@@ -28,6 +30,7 @@ export const SallerActionPanel: React.FC<Props> = ({
           userName={userName}
           rating={rating}
           activeListingCount={activeListingCount}
+          reviewsCount={reviewsCount}
         />
         <div className="mt-5">Отвечает около 30 минут</div>
         <SallerChat />

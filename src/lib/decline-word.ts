@@ -1,10 +1,9 @@
-export const declineWord = (word: string, count: number) => {
+export const declineWord = (count: number, words: string[]) => {
   if (count % 10 === 1) {
-    return word.substring(0, word.length - 1) + 'е';
+    return words[0];
   }
   if (count % 10 >= 2 && count % 10 <= 4) {
-    return word.substring(0, word.length - 1) + 'я';
+    return words[1];
   }
-
-  return word.substring(0, word.length - 1) + 'й';
+  return words[2];
 };

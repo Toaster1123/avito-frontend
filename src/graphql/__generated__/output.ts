@@ -424,7 +424,7 @@ export type GetOneListingQueryVariables = Exact<{
 }>;
 
 
-export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
+export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, receivedReviews?: Array<{ __typename?: 'Review', id: string }> | null, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
 
 
 export const FindAllListingsDocument = gql`
@@ -494,6 +494,9 @@ export const GetOneListingDocument = gql`
       rating
       profileImage
       createdAt
+      receivedReviews {
+        id
+      }
       listings {
         active
       }
