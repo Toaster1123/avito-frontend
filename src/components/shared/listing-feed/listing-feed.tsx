@@ -1,13 +1,8 @@
 import React from 'react';
-import {
-  ListingAdres,
-  ListingDescription,
-  ListingImages,
-  LitingPagination,
-  SameListings,
-} from './components';
+import { ListingAdres, ListingDescription, LitingPagination, SameListings } from './components';
 import { GetOneListingQuery } from '@/graphql/__generated__/output';
 import { SallerActionPanel } from '../saller-action-panel';
+import { ListingImages } from '../listing-images';
 
 type Listing = GetOneListingQuery['findOneListing'];
 
