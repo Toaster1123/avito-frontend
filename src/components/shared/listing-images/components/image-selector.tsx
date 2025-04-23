@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { ImageArrow } from './image-arrow';
 import Image from 'next/image';
@@ -27,6 +28,7 @@ export const ImageSelector: React.FC<Props> = ({
           alt="listing image"
           fill
           sizes="(max-width: 768px) 100vw, 50vw"
+          loading="eager"
           className="rounded-lg object-contain"
         />
       </div>

@@ -15,7 +15,7 @@ export const ImageArrow: React.FC<Props> = ({ showArrow = true, position, onClic
       <div
         onClick={() => onClick()}
         className={clsx(
-          'px-4 absolute duration-200 flex items-center h-full hover:bg-black/35 cursor-pointer z-40',
+          'px-4 absolute duration-200 flex items-center h-full hover:bg-black/35 cursor-pointer z-20',
           position === 'left' ? 'left-0' : 'right-0',
           className,
         )}>

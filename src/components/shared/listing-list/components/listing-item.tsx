@@ -22,16 +22,15 @@ export const ListingItem: FC<Props> = ({ item, className }) => {
         'group flex flex-col max-w-60 overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg',
         className,
       )}>
-      <div className="h-60 w-full overflow-hidden">
+      <div className="h-60 w-full relative overflow-hidden">
         {item.images.length > 0 ? (
           <Image
             src={item.images[0]}
             alt={item.name || 'image'}
-            width={240}
-            style={{ width: '100%', height: '100%' }}
-            height={240}
+            fill
             priority
-            className="object-cover transition-transform group-hover:scale-105"
+            sizes="(max-width: 240px) 100vw, 50vw"
+            className="w-full h-full object-cover transition-transform group-hover:scale-105"
           />
         ) : (
           <div className="h-60 w-full bg-neutral-200 text-neutral-500 text-sm flex justify-center items-center">

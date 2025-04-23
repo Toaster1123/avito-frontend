@@ -21,6 +21,7 @@ export const ImagesList: React.FC<Props> = ({ images, index, onChangeImage, clas
             src={image}
             alt="listing thumbnail"
             fill
+            loading="eager"
             sizes="(max-width: 768px) 50px, 80px"
             className={clsx('rounded-md object-cover', id === index && 'border-2 border-blue-500')}
           />

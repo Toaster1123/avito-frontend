@@ -68,6 +68,7 @@ export type CreateMessageInput = {
 export type CreateReviewInput = {
   /** Текст отзыва */
   comment?: InputMaybe<Scalars['String']['input']>;
+  listingId: Scalars['String']['input'];
   /** Оценка от 1 до 5 */
   rating: Scalars['Int']['input'];
   /** ID пользователя, который получил отзыв */
@@ -122,6 +123,8 @@ export type Listing = {
   name: Scalars['String']['output'];
   /** Цена объявления */
   price: Scalars['Int']['output'];
+  /** Отзывы к объявлению */
+  reviews?: Maybe<Array<Review>>;
   /** Дата последнего обновления объявления */
   updatedAt: Scalars['Timestamp']['output'];
   user: User;
@@ -271,7 +274,7 @@ export type Query = {
   message?: Maybe<Message>;
   messagesByDialog: Array<Message>;
   review?: Maybe<Review>;
-  reviews: Array<Maybe<Review>>;
+  reviews?: Maybe<Array<Review>>;
 };
 
 
@@ -330,6 +333,10 @@ export type Review = {
   createdAt: Scalars['Timestamp']['output'];
   /** ID отзыва */
   id: Scalars['ID']['output'];
+  /** Объявление, к которому относится отзыв */
+  listing: Listing;
+  /** ID объявления */
+  listingId?: Maybe<Scalars['String']['output']>;
   /** Оценка от 1 до 5 */
   rating: Scalars['Float']['output'];
   /** Пользователь, который получил отзыв */
@@ -368,6 +375,7 @@ export type UpdateReviewInput = {
   comment?: InputMaybe<Scalars['String']['input']>;
   /** ID отзыва */
   id: Scalars['String']['input'];
+  listingId?: InputMaybe<Scalars['String']['input']>;
   /** Оценка от 1 до 5 */
   rating?: InputMaybe<Scalars['Int']['input']>;
   /** ID пользователя, который получил отзыв */
@@ -410,6 +418,11 @@ export type User = {
   updatedAt: Scalars['Timestamp']['output'];
 };
 
+export type FindAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FindAllCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, parentId?: string | null }> };
+
 export type FindAllListingsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -427,6 +440,47 @@ export type GetOneListingQueryVariables = Exact<{
 export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, receivedReviews?: Array<{ __typename?: 'Review', id: string }> | null, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
 
 
+export const FindAllCategoriesDocument = gql`
+    query FindAllCategories {
+  categories {
+    id
+    name
+    parentId
+  }
+}
+    `;
+
+/**
+ * __useFindAllCategoriesQuery__
+ *
+ * To run a query within a React component, call `useFindAllCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindAllCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFindAllCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>(FindAllCategoriesDocument, options);
+      }
+export function useFindAllCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>(FindAllCategoriesDocument, options);
+        }
+export function useFindAllCategoriesSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>(FindAllCategoriesDocument, options);
+        }
+export type FindAllCategoriesQueryHookResult = ReturnType<typeof useFindAllCategoriesQuery>;
+export type FindAllCategoriesLazyQueryHookResult = ReturnType<typeof useFindAllCategoriesLazyQuery>;
+export type FindAllCategoriesSuspenseQueryHookResult = ReturnType<typeof useFindAllCategoriesSuspenseQuery>;
+export type FindAllCategoriesQueryResult = Apollo.QueryResult<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>;
 export const FindAllListingsDocument = gql`
     query FindAllListings($limit: Int, $offset: Int, $active: Boolean) {
   findAllListings(limit: $limit, offset: $offset, active: $active) {

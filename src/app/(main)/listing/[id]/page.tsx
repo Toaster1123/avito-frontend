@@ -1,4 +1,4 @@
-import { ListingFeed } from '@/components';
+import { ListingFeed, SearchSection } from '@/components';
 import { getClient } from '@/graphql/appolo-client';
 import { GET_ONE_LISTING, GET_TITLE_LISTING } from '@/graphql/appolo-consts/listings-query';
 
@@ -22,9 +22,9 @@ export default async function ListingPage({ params }: { params: { id: string } }
     query: GET_ONE_LISTING,
     variables: { id },
   });
-  console.log(data);
   return (
     <div>
+      <SearchSection />
       <ListingFeed listing={data.findOneListing} loading={loading} />
     </div>
   );

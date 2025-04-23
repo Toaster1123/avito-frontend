@@ -1,0 +1,7 @@
+query FindAllCategories {
+  categories {
+    id
+    name
+    parentId
+  }
+}

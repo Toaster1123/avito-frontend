@@ -10,7 +10,7 @@ interface Props {
 
 export const Header: FC<Props> = ({ className }) => {
   return (
-    <header className={clsx('bg-neutral-800 text-white', className)}>
+    <header className={clsx('bg-neutral-800 text-white z-50', className)}>
       <div className="container max-w-7xl max-[1380px]:px-24 mx-auto">
         <div className="flex items-center justify-between py-3">
           <div className="flex items-center space-x-6 text-sm">

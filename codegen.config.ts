@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   schema: process.env.NEXT_PUBLIC_API_URL,
-  documents: ['./src/graphql/**/*.graphql'],
+  documents: ['./src/graphql/**/*{graphql,gql}'],
   ignoreNoDocuments: true,
   generates: {
     './src/graphql/__generated__/output.ts': {

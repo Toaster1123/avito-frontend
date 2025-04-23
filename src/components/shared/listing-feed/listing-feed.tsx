@@ -13,7 +13,7 @@ interface Props {
 
 export const ListingFeed: React.FC<Props> = async ({ listing }) => {
   const activeListingCount =
-    listing.user.listings?.map((item) => item.active === true).length || null;
+    listing.user.listings?.filter((item) => item.active === true).length || null;
   const reviewsCount = listing.user.receivedReviews?.length || null;
   return (
     <div className="grid grid-cols-2 max-[1380px]:px-24 max-w-7xl mx-auto gap-14">
