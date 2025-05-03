@@ -1,4 +1,3 @@
-export { LitingPagination } from './listing-pagination';
-export { ListingDescription } from './listing-description';
+export { ListingTextData } from './listing-text-data';
 export { SameListings } from './same-listings';
-export { ListingAdres } from './listing-adres';
+export { ListingDetails } from './listing-details';

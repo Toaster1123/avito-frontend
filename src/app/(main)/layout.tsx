@@ -1,15 +1,21 @@
-import { Footer, Header } from '@/components';
+'use client';
+import { Footer, HeaderWrapper } from '@/components';
+import { usePathname } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-1">{children}</main>
-      <Footer />
-    </div>
+    <Suspense>
+      <div className="min-h-screen flex flex-col">
+        <HeaderWrapper isSticked={pathname == '/'} />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </div>
+    </Suspense>
   );
 }

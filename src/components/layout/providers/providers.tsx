@@ -14,7 +14,7 @@ interface Props {
 export const Providers: FC<Props> = ({ children }) => {
   return (
     <AntdRegistry>
-      <NextTopLoader color="oklch(58.8% 0.158 241.966)" />
+      <NextTopLoader color="oklch(58.8% 0.158 241.966)" showSpinner={false} />
       <ScrollToTop />
       <ApolloProvider client={apolloClient}>{children}</ApolloProvider>
     </AntdRegistry>

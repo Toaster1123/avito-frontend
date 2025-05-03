@@ -1,7 +1,22 @@
 query FindAllCategories {
-  categories {
+  findAllCategories {
     id
     name
-    parentId
+    children {
+      name
+      id
+      children {
+        name
+        id
+        children {
+          name
+          id
+          children {
+            name
+            id
+          }
+        }
+      }
+    }
   }
 }

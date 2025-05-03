@@ -1,10 +1,10 @@
 'use client';
 
 import type { FC } from 'react';
-import { clsx } from 'clsx';
 import { useInfiniteScrollListings } from '@/hooks';
 import { AsideContent } from '../shared';
 import { Categories, QuickLinks, Recommendations } from './components';
+import { Container } from '../ui';
 
 interface Props {
   className?: string;
@@ -17,7 +17,7 @@ export const MainWrapper: FC<Props> = ({ className }) => {
   }
 
   return (
-    <div className={clsx('max-[1380px]:px-24 max-w-7xl mx-auto', className)}>
+    <Container className={className}>
       <QuickLinks />
       <div className="flex gap-8">
         <div>
@@ -26,6 +26,6 @@ export const MainWrapper: FC<Props> = ({ className }) => {
         </div>
         <AsideContent />
       </div>
-    </div>
+    </Container>
   );
 };

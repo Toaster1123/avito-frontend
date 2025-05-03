@@ -1,50 +1,57 @@
 'use client';
-import { useEffect, useState, type FC } from 'react';
+import { useEffect, useRef, useState, type FC } from 'react';
 import { clsx } from 'clsx';
 import Link from 'next/link';
 import { EnvironmentOutlined } from '@ant-design/icons';
-import { Button } from '@/components';
-import { SearchInput } from './components';
 import ReactDOM from 'react-dom';
+import { useClickAway } from 'react-use';
+
+import { SearchInput } from './components';
+import { useFindAllCategoriesQuery } from '@/graphql/__generated__/output';
+import { useDisableScroll, useScrollListener } from '@/hooks';
+import { usePathname } from 'next/navigation';
+import { CategoriesSection } from '../categories-section';
+import { Container } from '@/components';
 
 interface Props {
-  isSticked?: boolean;
   className?: string;
 }
 
-export const SearchSection: FC<Props> = ({ isSticked = false, className }) => {
+export const SearchSection: FC<Props> = ({ className }) => {
+  const pathname = usePathname();
+
   const [activeSearch, setActiveSearch] = useState(false);
+  const [activeCategories, setActiveCategories] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const { data, loading } = useFindAllCategoriesQuery();
+
+  const categories = data?.findAllCategories || undefined;
+  const clickRef = useRef<HTMLDivElement>(null);
+  useScrollListener(setIsScrolled);
+  useDisableScroll(activeCategories);
+  useClickAway(clickRef, () => setActiveCategories(false));
   useEffect(() => {
-    const handleScroll = () => {
-      const isAtTop = window.scrollY === 0;
-      setIsScrolled(!isAtTop);
-    };
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
+    setActiveSearch(false);
+    setActiveCategories(false);
+  }, [pathname]);
   return (
     <>
-      {activeSearch &&
+      {(activeCategories || activeSearch) &&
         ReactDOM.createPortal(
           <div className="bg-black/30 w-full h-full top-0 fixed z-30" />,
           document.body,
         )}
 
       <div
+        ref={clickRef}
         className={clsx(
-          'duration-100 bg-foreground relative z-50',
-          isSticked && 'sticky top-0',
-          activeSearch && 'bg-white',
-          isSticked && isScrolled && 'shadow',
+          'duration-100 bg-foreground relative',
+          (activeCategories || activeSearch) && 'bg-white',
+          isScrolled && 'shadow',
           className,
         )}>
-        <div className="flex items-center max-w-7xl max-[1380px]:px-24 mx-auto w-full py-5 mb-2">
+        <Container className="flex items-center w-full py-5 mb-2">
           <Link href="/" className="mr-4 flex items-center">
             <div className="flex">
               <span className="h-8 w-8 rounded-full bg-green-500" />
@@ -54,15 +61,27 @@ export const SearchSection: FC<Props> = ({ isSticked = false, className }) => {
             <span className="ml-2 text-3xl font-bold">Avito</span>
           </Link>
 
-          <div className="flex items-center gap-2 w-full">
-            <Button className="py-2.5 px-4" text="Все категории" image="search" />
-            <SearchInput setActiveSearch={setActiveSearch} activeSearch={activeSearch} />
-            <div className="ml-4 flex gap-1 items-center text-sm truncate hover:text-red-500 cursor-pointer">
+          <div className="w-full flex">
+            <div className="flex items-center gap-2 w-full relative">
+              <CategoriesSection
+                loading={loading}
+                categories={categories}
+                activeCategories={activeCategories}
+                setActiveCategories={setActiveCategories}
+              />
+              <SearchInput
+                loading={loading}
+                categories={categories}
+                setActiveSearch={setActiveSearch}
+                activeSearch={activeSearch}
+              />
+            </div>
+            <div className="ml-4 w-44 flex gap-1 items-center text-sm hover:text-red-500 cursor-pointer">
               <EnvironmentOutlined style={{ fontSize: '14px', color: 'black' }} />
               <span>Во всех регионах</span>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
     </>
   );

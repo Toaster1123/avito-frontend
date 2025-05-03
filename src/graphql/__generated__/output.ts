@@ -28,6 +28,8 @@ export type Auth = {
 
 export type Category = {
   __typename?: 'Category';
+  /** Дочерние категории */
+  children?: Maybe<Array<Category>>;
   /** ID категории */
   id: Scalars['ID']['output'];
   /** Объявления в категории */
@@ -35,7 +37,9 @@ export type Category = {
   /** Название категории */
   name: Scalars['String']['output'];
   /** Родительская категория */
-  parentId?: Maybe<Scalars['String']['output']>;
+  parent?: Maybe<Category>;
+  /** ID родительской категории */
+  parentId?: Maybe<Scalars['ID']['output']>;
 };
 
 export type CreateCategoryInput = {
@@ -108,6 +112,9 @@ export type Listing = {
   active: Scalars['Boolean']['output'];
   /** Категория объявления */
   category: Category;
+  categoryBreadcrumb?: Maybe<Array<Category>>;
+  /** ID категории */
+  categoryId: Scalars['String']['output'];
   /** Город */
   city: Scalars['String']['output'];
   /** Дата создания объявления */
@@ -265,10 +272,10 @@ export type MutationUpdateReviewArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  categories: Array<Category>;
-  category: Category;
+  findAllCategories: Array<Category>;
   findAllListings: ListingPaginationResult;
   findAllUsers: Array<User>;
+  findOneCategory: Category;
   findOneListing: Listing;
   findOneUser: User;
   message?: Maybe<Message>;
@@ -278,15 +285,16 @@ export type Query = {
 };
 
 
-export type QueryCategoryArgs = {
-  id: Scalars['Int']['input'];
+export type QueryFindAllListingsArgs = {
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+  categoryId?: InputMaybe<Scalars['ID']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
-export type QueryFindAllListingsArgs = {
-  active?: InputMaybe<Scalars['Boolean']['input']>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
+export type QueryFindOneCategoryArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -421,12 +429,13 @@ export type User = {
 export type FindAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type FindAllCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, parentId?: string | null }> };
+export type FindAllCategoriesQuery = { __typename?: 'Query', findAllCategories: Array<{ __typename?: 'Category', id: string, name: string, children?: Array<{ __typename?: 'Category', name: string, id: string, children?: Array<{ __typename?: 'Category', name: string, id: string, children?: Array<{ __typename?: 'Category', name: string, id: string, children?: Array<{ __typename?: 'Category', name: string, id: string }> | null }> | null }> | null }> | null }> };
 
 export type FindAllListingsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   active?: InputMaybe<Scalars['Boolean']['input']>;
+  categoryId?: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
@@ -437,15 +446,30 @@ export type GetOneListingQueryVariables = Exact<{
 }>;
 
 
-export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, receivedReviews?: Array<{ __typename?: 'Review', id: string }> | null, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
+export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, categoryBreadcrumb?: Array<{ __typename?: 'Category', name: string }> | null, category: { __typename?: 'Category', id: string, name: string }, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, receivedReviews?: Array<{ __typename?: 'Review', id: string }> | null, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
 
 
 export const FindAllCategoriesDocument = gql`
     query FindAllCategories {
-  categories {
+  findAllCategories {
     id
     name
-    parentId
+    children {
+      name
+      id
+      children {
+        name
+        id
+        children {
+          name
+          id
+          children {
+            name
+            id
+          }
+        }
+      }
+    }
   }
 }
     `;
@@ -482,8 +506,13 @@ export type FindAllCategoriesLazyQueryHookResult = ReturnType<typeof useFindAllC
 export type FindAllCategoriesSuspenseQueryHookResult = ReturnType<typeof useFindAllCategoriesSuspenseQuery>;
 export type FindAllCategoriesQueryResult = Apollo.QueryResult<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>;
 export const FindAllListingsDocument = gql`
-    query FindAllListings($limit: Int, $offset: Int, $active: Boolean) {
-  findAllListings(limit: $limit, offset: $offset, active: $active) {
+    query FindAllListings($limit: Int, $offset: Int, $active: Boolean, $categoryId: ID) {
+  findAllListings(
+    limit: $limit
+    offset: $offset
+    active: $active
+    categoryId: $categoryId
+  ) {
     listings {
       id
       name
@@ -512,6 +541,7 @@ export const FindAllListingsDocument = gql`
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
  *      active: // value for 'active'
+ *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
@@ -541,6 +571,13 @@ export const GetOneListingDocument = gql`
     city
     images
     createdAt
+    categoryBreadcrumb {
+      name
+    }
+    category {
+      id
+      name
+    }
     user {
       id
       name

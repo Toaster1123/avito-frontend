@@ -1,3 +1,4 @@
+'use client';
 import { ListingsSceleton } from '@/components';
 import { useFindAllListingsQuery, FindAllListingsQuery } from '@/graphql/__generated__/output';
 import { useEffect, useState } from 'react';
@@ -6,7 +7,7 @@ import { useInView } from 'react-intersection-observer';
 const limit = 24;
 type Listing = FindAllListingsQuery['findAllListings']['listings'][0];
 
-export const useInfiniteScrollListings = () => {
+export const useInfiniteScrollListings = (categoryId?: string) => {
   const { ref, inView } = useInView({
     threshold: 1,
   });
@@ -25,6 +26,7 @@ export const useInfiniteScrollListings = () => {
       limit,
       offset: 0,
       active: true,
+      categoryId,
     },
     fetchPolicy: 'cache-first',
   });

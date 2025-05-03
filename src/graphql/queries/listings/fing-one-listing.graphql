@@ -7,6 +7,13 @@ query GetOneListing($id: ID!) {
     city
     images
     createdAt
+    categoryBreadcrumb {
+      name
+    }
+    category {
+      id
+      name
+    }
     user {
       id
       name
@@ -21,5 +28,55 @@ query GetOneListing($id: ID!) {
         active
       }
     }
+  }
+}
+
+fragment ListingWithBreadcrumb on Listing {
+  id
+  name
+  price
+  city
+  images
+  createdAt
+  category {
+    id
+    name
+    categoryBreadcrumb {
+      id
+      name
+    }
+  }
+}
+
+query FindAllListings($limit: Int, $offset: Int, $active: Boolean, $categoryId: ID) {
+  findAllListings(limit: $limit, offset: $offset, active: $active, categoryId: $categoryId) {
+    listings {
+      ... on Listing {
+        id
+        name
+        price
+        city
+        images
+        createdAt
+        category {
+          id
+          name
+        }
+      }
+
+      # Условно добавляем breadcrumb только если categoryId указан
+      ... on Listing @include(if: $categoryId) {
+        category {
+          categoryBreadcrumb {
+            id
+            name
+          }
+        }
+      }
+
+      # Или используем фрагмент
+      ...ListingWithBreadcrumb @include(if: $categoryId)
+    }
+    hasMore
   }
 }

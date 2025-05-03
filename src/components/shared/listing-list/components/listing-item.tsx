@@ -46,7 +46,7 @@ export const ListingItem: FC<Props> = ({ item, className }) => {
           <p className="text-lg font-bold">{formatNumber(item.price)} ₽</p>
           <div className="text-sm text-neutral-700 flex items-center gap-0.5">
             <EnvironmentOutlined />
-            {item.city}
+            {item.city.split(',')[0]}
           </div>
         </div>
       </div>

@@ -10,6 +10,13 @@ export const GET_ONE_LISTING = gql`
       city
       images
       createdAt
+      categoryBreadcrumb {
+        name
+      }
+      category {
+        id
+        name
+      }
       user {
         id
         name
@@ -32,6 +39,28 @@ export const GET_TITLE_LISTING = gql`
   query GetTitleListing($id: ID!) {
     findOneListing(id: $id) {
       name
+    }
+  }
+`;
+
+export const GET_ALL_LISTINGS_BY_CATEGORY = gql`
+  query FindAllListingsByCategory($categoryId: ID!, $limit: Int, $offset: Int, $active: Boolean) {
+    findAllListingsByCategory(
+      categoryId: $categoryId
+      limit: $limit
+      offset: $offset
+      active: $active
+    ) {
+      listings {
+        id
+        name
+        active
+        category {
+          id
+          name
+        }
+      }
+      hasMore
     }
   }
 `;

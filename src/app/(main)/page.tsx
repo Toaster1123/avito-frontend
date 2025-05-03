@@ -1,9 +1,8 @@
-import { MainWrapper, SearchSection } from '@/components';
+import { MainWrapper } from '@/components';
 
 export default function Home() {
   return (
     <div>
-      <SearchSection isSticked />
       <MainWrapper />
     </div>
   );
