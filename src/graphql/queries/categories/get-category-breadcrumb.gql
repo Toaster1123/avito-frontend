@@ -1,0 +1,6 @@
+query GetCategoryBreadcrumb($categoryId: ID) {
+  getCategoryBreadcrumb(categoryId: $categoryId) {
+    id
+    name
+  }
+}

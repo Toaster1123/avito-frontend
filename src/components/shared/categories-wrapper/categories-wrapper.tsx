@@ -9,8 +9,12 @@ interface Props {
 }
 
 export const CategoriesWrapper: React.FC<Props> = ({ id }) => {
-  const { listings, error } = useInfiniteScrollListings(id);
+  const { listings, loading, error, breadCrumbs } = useInfiniteScrollListings(id);
   console.log(listings, error);
 
-  return <Container>{/* <TopBreadcrumb breadCrumbs={}/>    */}</Container>;
+  return (
+    <Container>
+      <TopBreadcrumb loading={loading} categoryId={id} breadCrumbs={breadCrumbs} />
+    </Container>
+  );
 };

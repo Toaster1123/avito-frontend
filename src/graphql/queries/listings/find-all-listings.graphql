@@ -1,5 +1,5 @@
-query FindAllListings($limit: Int, $offset: Int, $active: Boolean, $categoryId: ID) {
-  findAllListings(limit: $limit, offset: $offset, active: $active, categoryId: $categoryId) {
+query FindAllListingsByCategory($categoryId: ID, $limit: Int, $offset: Int, $active: Boolean) {
+  findAllListings(categoryId: $categoryId, limit: $limit, offset: $offset, active: $active) {
     listings {
       id
       name
@@ -9,5 +9,9 @@ query FindAllListings($limit: Int, $offset: Int, $active: Boolean, $categoryId: 
       city
     }
     hasMore
+  }
+  getCategoryBreadcrumb(categoryId: $categoryId) {
+    id
+    name
   }
 }

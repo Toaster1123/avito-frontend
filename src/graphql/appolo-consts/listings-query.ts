@@ -11,6 +11,7 @@ export const GET_ONE_LISTING = gql`
       images
       createdAt
       categoryBreadcrumb {
+        id
         name
       }
       category {
@@ -43,24 +44,23 @@ export const GET_TITLE_LISTING = gql`
   }
 `;
 
-export const GET_ALL_LISTINGS_BY_CATEGORY = gql`
-  query FindAllListingsByCategory($categoryId: ID!, $limit: Int, $offset: Int, $active: Boolean) {
-    findAllListingsByCategory(
-      categoryId: $categoryId
-      limit: $limit
-      offset: $offset
-      active: $active
-    ) {
-      listings {
-        id
-        name
-        active
-        category {
-          id
-          name
-        }
-      }
-      hasMore
-    }
-  }
-`;
+// export const GET_ALL_LISTINGS = (withBreadcrumb: boolean) => gql`
+//   query FindAllListings($limit: Int, $offset: Int, $active: Boolean, $categoryId: ID) {
+//     findAllListings(limit: $limit, offset: $offset, active: $active, categoryId: $categoryId) {
+//       listings {
+//         id
+//         name
+//         price
+//         city
+//         images
+//         createdAt
+//         category {
+//           id
+//           name
+//         }
+//         ${withBreadcrumb ? `categoryBreadcrumb { id name }` : ''}
+//       }
+//       hasMore
+//     }
+//   }
+// `;

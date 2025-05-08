@@ -3,7 +3,7 @@ import { getClient } from '@/graphql/appolo-client';
 import { GET_TITLE_CATEGORY } from '@/graphql/appolo-consts/category-query';
 
 export async function generateMetadata({ params }: { params: { id: string } }) {
-  const { id } = params;
+  const { id } = await params;
   const client = getClient();
   const { data } = await client.query({
     query: GET_TITLE_CATEGORY,

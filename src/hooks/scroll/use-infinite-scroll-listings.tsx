@@ -1,17 +1,20 @@
 'use client';
 import { ListingsSceleton } from '@/components';
-import { useFindAllListingsQuery, FindAllListingsQuery } from '@/graphql/__generated__/output';
+import {
+  FindAllListingsByCategoryQuery,
+  useFindAllListingsByCategoryQuery,
+} from '@/graphql/__generated__/output';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const limit = 24;
-type Listing = FindAllListingsQuery['findAllListings']['listings'][0];
+type ListingPreview = FindAllListingsByCategoryQuery['findAllListings']['listings'][number];
 
 export const useInfiniteScrollListings = (categoryId?: string) => {
   const { ref, inView } = useInView({
     threshold: 1,
   });
-  const [items, setItems] = useState<Listing[]>([]);
+  const [items, setItems] = useState<ListingPreview[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -21,7 +24,7 @@ export const useInfiniteScrollListings = (categoryId?: string) => {
     loading: initialLoading,
     error,
     fetchMore,
-  } = useFindAllListingsQuery({
+  } = useFindAllListingsByCategoryQuery({
     variables: {
       limit,
       offset: 0,
@@ -65,5 +68,6 @@ export const useInfiniteScrollListings = (categoryId?: string) => {
     loading: initialLoading || isLoadingMore,
     error,
     listingsSceleton,
+    breadCrumbs: categoryId && data?.getCategoryBreadcrumb ? data.getCategoryBreadcrumb : null,
   };
 };

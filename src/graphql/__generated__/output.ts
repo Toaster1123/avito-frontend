@@ -112,7 +112,6 @@ export type Listing = {
   active: Scalars['Boolean']['output'];
   /** Категория объявления */
   category: Category;
-  categoryBreadcrumb?: Maybe<Array<Category>>;
   /** ID категории */
   categoryId: Scalars['String']['output'];
   /** Город */
@@ -278,6 +277,7 @@ export type Query = {
   findOneCategory: Category;
   findOneListing: Listing;
   findOneUser: User;
+  getCategoryBreadcrumb?: Maybe<Array<Category>>;
   message?: Maybe<Message>;
   messagesByDialog: Array<Message>;
   review?: Maybe<Review>;
@@ -305,6 +305,11 @@ export type QueryFindOneListingArgs = {
 
 export type QueryFindOneUserArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QueryGetCategoryBreadcrumbArgs = {
+  categoryId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
@@ -431,22 +436,29 @@ export type FindAllCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type FindAllCategoriesQuery = { __typename?: 'Query', findAllCategories: Array<{ __typename?: 'Category', id: string, name: string, children?: Array<{ __typename?: 'Category', name: string, id: string, children?: Array<{ __typename?: 'Category', name: string, id: string, children?: Array<{ __typename?: 'Category', name: string, id: string, children?: Array<{ __typename?: 'Category', name: string, id: string }> | null }> | null }> | null }> | null }> };
 
-export type FindAllListingsQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  active?: InputMaybe<Scalars['Boolean']['input']>;
+export type GetCategoryBreadcrumbQueryVariables = Exact<{
   categoryId?: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
-export type FindAllListingsQuery = { __typename?: 'Query', findAllListings: { __typename?: 'ListingPaginationResult', hasMore: boolean, listings: Array<{ __typename?: 'Listing', id: string, name: string, price: number, images: Array<string>, createdAt: any, city: string }> } };
+export type GetCategoryBreadcrumbQuery = { __typename?: 'Query', getCategoryBreadcrumb?: Array<{ __typename?: 'Category', id: string, name: string }> | null };
+
+export type FindAllListingsByCategoryQueryVariables = Exact<{
+  categoryId?: InputMaybe<Scalars['ID']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  active?: InputMaybe<Scalars['Boolean']['input']>;
+}>;
+
+
+export type FindAllListingsByCategoryQuery = { __typename?: 'Query', findAllListings: { __typename?: 'ListingPaginationResult', hasMore: boolean, listings: Array<{ __typename?: 'Listing', id: string, name: string, price: number, images: Array<string>, createdAt: any, city: string }> }, getCategoryBreadcrumb?: Array<{ __typename?: 'Category', id: string, name: string }> | null };
 
 export type GetOneListingQueryVariables = Exact<{
   id: Scalars['ID']['input'];
 }>;
 
 
-export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, categoryBreadcrumb?: Array<{ __typename?: 'Category', name: string }> | null, category: { __typename?: 'Category', id: string, name: string }, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, receivedReviews?: Array<{ __typename?: 'Review', id: string }> | null, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
+export type GetOneListingQuery = { __typename?: 'Query', findOneListing: { __typename?: 'Listing', id: string, name: string, description: string, price: number, city: string, images: Array<string>, createdAt: any, category: { __typename?: 'Category', id: string, name: string }, user: { __typename?: 'User', id: string, name: string, email: string, rating?: number | null, profileImage?: string | null, createdAt: any, receivedReviews?: Array<{ __typename?: 'Review', id: string }> | null, listings?: Array<{ __typename?: 'Listing', active: boolean }> | null } } };
 
 
 export const FindAllCategoriesDocument = gql`
@@ -505,13 +517,54 @@ export type FindAllCategoriesQueryHookResult = ReturnType<typeof useFindAllCateg
 export type FindAllCategoriesLazyQueryHookResult = ReturnType<typeof useFindAllCategoriesLazyQuery>;
 export type FindAllCategoriesSuspenseQueryHookResult = ReturnType<typeof useFindAllCategoriesSuspenseQuery>;
 export type FindAllCategoriesQueryResult = Apollo.QueryResult<FindAllCategoriesQuery, FindAllCategoriesQueryVariables>;
-export const FindAllListingsDocument = gql`
-    query FindAllListings($limit: Int, $offset: Int, $active: Boolean, $categoryId: ID) {
+export const GetCategoryBreadcrumbDocument = gql`
+    query GetCategoryBreadcrumb($categoryId: ID) {
+  getCategoryBreadcrumb(categoryId: $categoryId) {
+    id
+    name
+  }
+}
+    `;
+
+/**
+ * __useGetCategoryBreadcrumbQuery__
+ *
+ * To run a query within a React component, call `useGetCategoryBreadcrumbQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCategoryBreadcrumbQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCategoryBreadcrumbQuery({
+ *   variables: {
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useGetCategoryBreadcrumbQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoryBreadcrumbQuery, GetCategoryBreadcrumbQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCategoryBreadcrumbQuery, GetCategoryBreadcrumbQueryVariables>(GetCategoryBreadcrumbDocument, options);
+      }
+export function useGetCategoryBreadcrumbLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCategoryBreadcrumbQuery, GetCategoryBreadcrumbQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCategoryBreadcrumbQuery, GetCategoryBreadcrumbQueryVariables>(GetCategoryBreadcrumbDocument, options);
+        }
+export function useGetCategoryBreadcrumbSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCategoryBreadcrumbQuery, GetCategoryBreadcrumbQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCategoryBreadcrumbQuery, GetCategoryBreadcrumbQueryVariables>(GetCategoryBreadcrumbDocument, options);
+        }
+export type GetCategoryBreadcrumbQueryHookResult = ReturnType<typeof useGetCategoryBreadcrumbQuery>;
+export type GetCategoryBreadcrumbLazyQueryHookResult = ReturnType<typeof useGetCategoryBreadcrumbLazyQuery>;
+export type GetCategoryBreadcrumbSuspenseQueryHookResult = ReturnType<typeof useGetCategoryBreadcrumbSuspenseQuery>;
+export type GetCategoryBreadcrumbQueryResult = Apollo.QueryResult<GetCategoryBreadcrumbQuery, GetCategoryBreadcrumbQueryVariables>;
+export const FindAllListingsByCategoryDocument = gql`
+    query FindAllListingsByCategory($categoryId: ID, $limit: Int, $offset: Int, $active: Boolean) {
   findAllListings(
+    categoryId: $categoryId
     limit: $limit
     offset: $offset
     active: $active
-    categoryId: $categoryId
   ) {
     listings {
       id
@@ -523,44 +576,48 @@ export const FindAllListingsDocument = gql`
     }
     hasMore
   }
+  getCategoryBreadcrumb(categoryId: $categoryId) {
+    id
+    name
+  }
 }
     `;
 
 /**
- * __useFindAllListingsQuery__
+ * __useFindAllListingsByCategoryQuery__
  *
- * To run a query within a React component, call `useFindAllListingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindAllListingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFindAllListingsByCategoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindAllListingsByCategoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFindAllListingsQuery({
+ * const { data, loading, error } = useFindAllListingsByCategoryQuery({
  *   variables: {
+ *      categoryId: // value for 'categoryId'
  *      limit: // value for 'limit'
  *      offset: // value for 'offset'
  *      active: // value for 'active'
- *      categoryId: // value for 'categoryId'
  *   },
  * });
  */
-export function useFindAllListingsQuery(baseOptions?: Apollo.QueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>) {
+export function useFindAllListingsByCategoryQuery(baseOptions?: Apollo.QueryHookOptions<FindAllListingsByCategoryQuery, FindAllListingsByCategoryQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(FindAllListingsDocument, options);
+        return Apollo.useQuery<FindAllListingsByCategoryQuery, FindAllListingsByCategoryQueryVariables>(FindAllListingsByCategoryDocument, options);
       }
-export function useFindAllListingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>) {
+export function useFindAllListingsByCategoryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindAllListingsByCategoryQuery, FindAllListingsByCategoryQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(FindAllListingsDocument, options);
+          return Apollo.useLazyQuery<FindAllListingsByCategoryQuery, FindAllListingsByCategoryQueryVariables>(FindAllListingsByCategoryDocument, options);
         }
-export function useFindAllListingsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllListingsQuery, FindAllListingsQueryVariables>) {
+export function useFindAllListingsByCategorySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<FindAllListingsByCategoryQuery, FindAllListingsByCategoryQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<FindAllListingsQuery, FindAllListingsQueryVariables>(FindAllListingsDocument, options);
+          return Apollo.useSuspenseQuery<FindAllListingsByCategoryQuery, FindAllListingsByCategoryQueryVariables>(FindAllListingsByCategoryDocument, options);
         }
-export type FindAllListingsQueryHookResult = ReturnType<typeof useFindAllListingsQuery>;
-export type FindAllListingsLazyQueryHookResult = ReturnType<typeof useFindAllListingsLazyQuery>;
-export type FindAllListingsSuspenseQueryHookResult = ReturnType<typeof useFindAllListingsSuspenseQuery>;
-export type FindAllListingsQueryResult = Apollo.QueryResult<FindAllListingsQuery, FindAllListingsQueryVariables>;
+export type FindAllListingsByCategoryQueryHookResult = ReturnType<typeof useFindAllListingsByCategoryQuery>;
+export type FindAllListingsByCategoryLazyQueryHookResult = ReturnType<typeof useFindAllListingsByCategoryLazyQuery>;
+export type FindAllListingsByCategorySuspenseQueryHookResult = ReturnType<typeof useFindAllListingsByCategorySuspenseQuery>;
+export type FindAllListingsByCategoryQueryResult = Apollo.QueryResult<FindAllListingsByCategoryQuery, FindAllListingsByCategoryQueryVariables>;
 export const GetOneListingDocument = gql`
     query GetOneListing($id: ID!) {
   findOneListing(id: $id) {
@@ -571,9 +628,6 @@ export const GetOneListingDocument = gql`
     city
     images
     createdAt
-    categoryBreadcrumb {
-      name
-    }
     category {
       id
       name
